@@ -29,17 +29,11 @@ Blocking out a scene by hand is hours of add-menu, transform-panel, repeat—bef
 
 Each command below is self-contained: open PowerShell, copy it, paste it and press Enter.
 
-1. Grab the release ZIP `blender-ai-copilot-forge.zip` from [Download][download-url] and save it to your Windows machine.
-2. Confirm the installed Blender build and version folder on a standard Windows setup, then in Blender open **Edit → Preferences → Get Extensions → the ⋮ menu → Install from Disk**.
-   `powershell Get-ChildItem $env:ProgramFiles\Blender*\Blender*\blender.exe`
-3. Select the ZIP, enable **blender-ai-copilot-forge**, and open the panel **3D Viewport → N → Copilot Forge**; the command opens your Downloads folder so the ZIP is one click away.
-   `powershell Invoke-Item $env:USERPROFILE\Downloads`
-4. Choose a provider—OpenAI, Anthropic Claude, Google Gemini, OpenRouter, OpenCode Zen, Ollama or a custom API—add your connection details and select a tool-calling model; the command checks a local Ollama server when that is your provider.
-   `powershell Invoke-RestMethod http://localhost:11434/api/tags`
-5. Send your first build brief in Blender or click **Open Studio Window**; the command confirms Blender is running before the forging starts.
-   `powershell Get-Process blender`
-6. Runtime profile: Windows x64 with Blender 4.2 or later, Blender kept open while Studio or an external client is in use; when the built-in MCP server is enabled, the command confirms its local endpoint.
-   `powershell Test-NetConnection 127.0.0.1 -Port 9876`
+1. Download **`mcp-for-blender-pro.zip`** from [Releases](../../releases/latest).
+2. In Blender, open **Edit → Preferences → Get Extensions → menu → Install from Disk**.
+3. Select the ZIP, enable **mcp-for-blender-pro**, then open **3D Viewport → N → MCP Pro**.
+4. Choose a provider, add your connection details and select a model.
+5. Send a message in Blender or click **Open Studio Window**.
 
 ## Features
 
