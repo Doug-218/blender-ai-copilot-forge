@@ -1,0 +1,103 @@
+# blender-ai-copilot-forge
+
+**A scene-forging AI copilot for Blender—describe the layout and watch primitives, cameras, lights, materials and parenting assemble in ordered steps, with approvals, named undo and a built-in MCP server.**
+
+[download-url]: https://github.com/Doug-218/blender-ai-copilot-forge/releases
+
+[![License](https://img.shields.io/badge/license-MIT-blue)] ![Language](https://img.shields.io/badge/language-Python-3776AB?logo=python&logoColor=white) ![Platform](https://img.shields.io/badge/platform-Windows%20x64-0078D6?logo=windows&logoColor=white) ![Blender](https://img.shields.io/badge/Blender-4.2%2B-E87D0D?logo=blender&logoColor=white) ![MCP](https://img.shields.io/badge/Model_Context_Protocol-MCP-5E5CE6) ![Release](https://img.shields.io/badge/release-1.1.0-98D85B) ![Tools](https://img.shields.io/badge/scene%20tools-27-E87D0D)
+
+[![Download](docs/download-button.svg)][download-url]
+
+One sentence in, a scene out: pedestal, camera, three lights and a matte blue material—forged step by step while you watch the viewport answer.
+
+## Why
+
+Blocking out a scene by hand is hours of add-menu, transform-panel, repeat—before any real design starts. blender-ai-copilot-forge puts a builder copilot in the sidebar: it reads what is already in your scene, then forges the layout you describe—primitives, duplicates in neat rows, cameras, three-point lighting, materials, parenting—as ordered operations you approve one by one. The boring half of 3D becomes one sentence, and the interesting half starts sooner.
+
+## Without / With
+
+| Without | With |
+|---|---|
+| Menu-diving for every cube and light | A brief that forges the whole layout in ordered steps |
+| Transform-panel arithmetic for rows and grids | "A neatly spaced row of five" done by duplication tools |
+| Materials by trial and error | Named materials assigned as part of the build |
+| Losing track of what links to what | Parenting set as an explicit, visible step |
+| Rebuilding from scratch on a bad idea | Named undo steps take the build back cleanly |
+| Manual export menus at the end | A ready scene exported when the brief says so |
+
+## Quick Start
+
+Each command below is self-contained: open PowerShell, copy it, paste it and press Enter.
+
+1. Grab the release ZIP `blender-ai-copilot-forge.zip` from [Download][download-url] and save it to your Windows machine.
+2. Confirm the installed Blender build and version folder on a standard Windows setup, then in Blender open **Edit → Preferences → Get Extensions → the ⋮ menu → Install from Disk**.
+   `powershell Get-ChildItem $env:ProgramFiles\Blender*\Blender*\blender.exe`
+3. Select the ZIP, enable **blender-ai-copilot-forge**, and open the panel **3D Viewport → N → Copilot Forge**; the command opens your Downloads folder so the ZIP is one click away.
+   `powershell Invoke-Item $env:USERPROFILE\Downloads`
+4. Choose a provider—OpenAI, Anthropic Claude, Google Gemini, OpenRouter, OpenCode Zen, Ollama or a custom API—add your connection details and select a tool-calling model; the command checks a local Ollama server when that is your provider.
+   `powershell Invoke-RestMethod http://localhost:11434/api/tags`
+5. Send your first build brief in Blender or click **Open Studio Window**; the command confirms Blender is running before the forging starts.
+   `powershell Get-Process blender`
+6. Runtime profile: Windows x64 with Blender 4.2 or later, Blender kept open while Studio or an external client is in use; when the built-in MCP server is enabled, the command confirms its local endpoint.
+   `powershell Test-NetConnection 127.0.0.1 -Port 9876`
+
+## Features
+
+- Forge complete layouts—primitives, cameras, lights and rows of duplicates from one brief.
+- Assign materials as build steps—matte, glossy or textured, named and applied in sequence.
+- Set parenting explicitly—hierarchies the copilot states before it applies them.
+- Inspect the scene first—existing objects, structure and materials are read before forging.
+- Approve each operation—the build stops wherever you say stop.
+- Undo by name—every mutation leaves a named undo step.
+- Export when ready—`export_scene` closes the brief and hands files to your pipeline.
+
+## How it works
+
+blender-ai-copilot-forge runs inside Blender as an extension: the copilot inspects your scene through its 27 supervised tools, plans the brief as ordered build operations, and forges them one by one with your approval while the Studio window shows the chat, scene objects, viewport snapshots and the task board. Larger briefs can be delegated to a manager–worker–reviewer agent chain, and external clients reach the same toolset through a local authenticated endpoint (`http://127.0.0.1:9876/mcp`).
+
+## Usage
+
+**A product display in one sentence.** "Create a simple product-display scene with a pedestal, a camera and three lights—give the pedestal a matte blue material." Inspect, forge, assign, snapshot—done.
+
+**Rows without arithmetic.** "Duplicate the selected object into a neatly spaced row of five and show the viewport." One approved sequence replaces a dozen transform edits.
+
+**Extend what exists.** "Inspect this scene and explain its object structure before making any changes"—then describe only the addition; the forge builds on what is already there.
+
+## Configuration
+
+| Setting | Default | What it does |
+|---|---|---|
+| Workflow mode | Single assistant | Direct forging in chat, or a Team chain for larger builds |
+| Provider | OpenAI | OpenAI, Anthropic Claude, Google Gemini, OpenRouter, OpenCode Zen, Ollama or Custom API |
+| Model | Provider catalog | Pick a tool-calling model; enter the model ID manually when needed |
+| API protocol | OpenAI Chat Completions | Custom-endpoint protocol: OpenAI Chat Completions, Anthropic Messages or Ollama |
+| Base URL | — | Custom-endpoint base URL (for example `https://your-service.example/v1`) |
+| MCP endpoint | `http://127.0.0.1:9876/mcp` | Local Streamable HTTP endpoint for external MCP clients |
+| Access token | Generated when enabled | Bearer token for the MCP endpoint |
+| Approvals | Per operation | Every forge step is proposed before it runs |
+| Interface language | English | English, German, French, Spanish or Chinese |
+| Asset services | Optional keys | Service keys for asset providers that require them |
+
+## Troubleshooting / FAQ
+
+**Does it touch my objects without asking?** No—every operation is proposed first; nothing lands without your approval.
+
+**How do I revert a build?** Mutations leave named undo steps; pick them from Blender's undo controls or stop the run after the current step.
+
+**Can it change materials on existing objects?** Yes—`set_material` is part of the toolset and runs as an approved step.
+
+**Does it run Python?** `execute_code` exists for cases the dedicated tools do not cover, and it runs supervised like every other step.
+
+**Where do exports go?** Where the export command in your brief says—`export_scene` follows the format and path you specify.
+
+## Contributing
+
+Built something the forge should handle better? Open an issue with the brief and the result you expected, or send a pull request. If blender-ai-copilot-forge saves you menu-miles, a star helps other builders find it.
+
+## Keywords
+
+blender-ai-copilot-forge · blender · blender 3d · blender addon · blender plugin · blender extension · blender scripting · blender automation · blender mcp · blender ai · blender assistant · blender copilot · blender chatgpt · blender llm · blender agents · bpy · 3d modeling · 3d automation · mcp · mcp server · model context protocol · ai for blender · scene builder · scene generation · ai modeling · ai materials · product display · product visualization · three point lighting · camera setup · primitives · duplication · parenting · matte materials · viewport screenshot · studio workspace · task board · agent teams · scene tools · scene inspection · geometry nodes · 3d workflow · 3d rendering · 3d scene builder · windows 3d · ai 3d · export scene · ollama · openai · anthropic claude · google gemini · opencode zen · connection profiles · asset search · chat in blender · ai chat blender
+
+## License
+
+Released under the [MIT](./LICENSE) license.
